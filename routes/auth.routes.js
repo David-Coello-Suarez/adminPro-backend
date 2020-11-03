@@ -2,20 +2,29 @@
     Path: '/api/login
 */
 
-const router = require('express').Router();
-const { check } = require('express-validator');
+const router = require("express").Router()
+const { check } = require("express-validator")
 
 const { validarCampos } = require("../middlewares/validar-campos")
-const { login } = require('../controllers/auth.controllers');
+const { googleSignIn, login } = require("../controllers/auth.controllers")
 
 router.post(
-    '/', 
-    [
-        check('email', 'El email es obligatorio').isEmail(),
-        check('password', 'El password es obligatorio').not().isEmpty(),
-        validarCampos
-    ], 
-    login
-);
+	"/",
+	[
+		check("email", "El email es obligatorio").isEmail(),
+		check("password", "El password es obligatorio").not().isEmpty(),
+		validarCampos,
+	],
+	login
+)
 
-module.exports = router;
+router.post(
+	"/google",
+	[
+		check("token", "El token de google es obligatorio").not().isEmpty(),
+		validarCampos,
+	],
+	googleSignIn
+)
+
+module.exports = router

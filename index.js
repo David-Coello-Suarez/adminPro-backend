@@ -19,6 +19,9 @@ dbconecction()
 
 // mongo : mean_user, aO3lFtF4dEBaKOmd
 
+//Directorio publico
+app.use(express.static("public"))
+
 //Rutas
 app.use("/api/usuarios", require("./routes/usuarios.routes"))
 app.use("/api/hospital", require("./routes/hospital.routes"))
