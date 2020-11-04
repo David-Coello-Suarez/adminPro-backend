@@ -35,18 +35,65 @@ const postMedico = async (req, res = response) => {
 	}
 }
 
-const putMedico = (req, res = response) => {
-	res.status(200).json({
-		ok: true,
-		msg: "Actualizar Médicos",
-	})
+const putMedico = async (req, res = response) => {
+	try {
+		const { id } = req.params
+
+		const medicoDB = await Medico.findById(id)
+
+		if (!medicoDB) {
+			return res
+				.status(404)
+				.json({ ok: true, msg: "Usuario no encontrado por id" })
+		}
+
+		const medicoactual = {
+			...req.body,
+			usuario: req.id,
+		}
+
+		const medico = await Medico.findByIdAndUpdate(id, medicoactual, {
+			new: true,
+		})
+
+		res.status(200).json({
+			ok: true,
+			medico,
+		})
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({
+			ok: false,
+			msg: "Hable con el administrador",
+		})
+	}
 }
 
-const deleteMedico = (req, res = response) => {
-	res.status(200).json({
-		ok: true,
-		msg: "Eliminar Médicos",
-	})
+const deleteMedico = async (req, res = response) => {
+	try {
+		const { id } = req.params
+
+		const medicoDB = await Medico.findById(id)
+
+		if (!medicoDB) {
+			return res
+				.status(404)
+				.json({ ok: true, msg: "Usuario no encontrado por id" })
+		}
+
+		await Medico.findByIdAndDelete(id)
+
+		res.status(200).json({
+			ok: true,
+			msg: "Medico eliminado",
+		})
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({
+			ok: false,
+			msg: "Hable con el administrador",
+		})
+	}
 }
 
 module.exports = {

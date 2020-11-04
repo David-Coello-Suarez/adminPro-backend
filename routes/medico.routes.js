@@ -27,7 +27,16 @@ router.post(
 	postMedico
 )
 
-router.put("/:id", [], putMedico)
+router.put(
+	"/:id",
+	[
+		validarJWT,
+		check("nombre", "El nombre es necesario").not().isEmpty(),
+		check("hospital", "El id del hospital debe ser válido").isMongoId(),
+		validarCampos,
+	],
+	putMedico
+)
 
 router.delete("/:id", deleteMedico)
 

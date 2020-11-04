@@ -6,7 +6,12 @@ const router = require("express").Router()
 const { check } = require("express-validator")
 
 const { validarCampos } = require("../middlewares/validar-campos")
-const { googleSignIn, login } = require("../controllers/auth.controllers")
+const { validarJWT } = require("../middlewares/validar-jwt")
+const {
+	googleSignIn,
+	login,
+	renewToken,
+} = require("../controllers/auth.controllers")
 
 router.post(
 	"/",
@@ -26,5 +31,7 @@ router.post(
 	],
 	googleSignIn
 )
+
+router.get("/renew", validarJWT, renewToken)
 
 module.exports = router
